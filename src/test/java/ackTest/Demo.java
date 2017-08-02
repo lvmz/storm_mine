@@ -1,9 +1,12 @@
 package ackTest;
 
+import backtype.storm.Config;
+import backtype.storm.LocalCluster;
 import backtype.storm.spout.SpoutOutputCollector;
 import backtype.storm.task.OutputCollector;
 import backtype.storm.task.TopologyContext;
 import backtype.storm.topology.OutputFieldsDeclarer;
+import backtype.storm.topology.TopologyBuilder;
 import backtype.storm.topology.base.BaseRichBolt;
 import backtype.storm.topology.base.BaseRichSpout;
 import backtype.storm.tuple.Fields;
@@ -20,7 +23,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Created by lmz on 2017/8/1.
  */
 public class Demo {
-    public class RandomSentenceSpout extends BaseRichSpout {
+    public static class RandomSentenceSpout extends BaseRichSpout {
         private SpoutOutputCollector _collector;
         private Random _rand;
         private ConcurrentHashMap<UUID, Values> _pending;
@@ -61,7 +64,7 @@ public class Demo {
         }
     }
 
-    public class SplitSentence extends BaseRichBolt {
+    public static class SplitSentence extends BaseRichBolt {
         OutputCollector _collector;
 
         public void prepare(Map map, TopologyContext topologyContext, OutputCollector outputCollector) {
@@ -70,9 +73,10 @@ public class Demo {
 
         public void execute(Tuple tuple) {
             String sentence = tuple.getString(0);
-            for (String word : sentence.split(" "))
+            for (String word : sentence.split(" ")) {
+                System.out.println("========"+word+"========");
                 _collector.emit(tuple, new Values(word));//发射tuple时进行锚定
-
+            }
             _collector.ack(tuple);//对处理完的tuple进行确认
 
         }
@@ -80,5 +84,17 @@ public class Demo {
         public void declareOutputFields(OutputFieldsDeclarer outputFieldsDeclarer) {
             outputFieldsDeclarer.declare(new Fields("word"));
         }
+    }
+
+    public static void main(String[] args) {
+        TopologyBuilder builder = new TopologyBuilder();
+        builder.setSpout("split",new RandomSentenceSpout(),1);
+        builder.setBolt("word",new SplitSentence(),2).shuffleGrouping("split");
+        Config config = new Config();
+        config.setDebug(false);
+        config.setMaxTaskParallelism(1);
+
+        LocalCluster localCluster = new LocalCluster();
+        localCluster.submitTopology("wordcount",config,builder.createTopology());
     }
 }
