@@ -5,7 +5,8 @@ package com.jk.storm_stat.util;
  */
 public enum PropertiesType {
     STORM_STAT_ONLINE("druid_storm_stat_online.properties"),
-    STORM_STAT_TEST("druid_storm_stat_test.properties");
+    STORM_STAT_TEST("druid_storm_stat_test.properties"),
+    JK_HBASE_TEST("jike_hbase_test");
     private String value;
 
     public String getValue() {

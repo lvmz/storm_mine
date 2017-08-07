@@ -18,7 +18,6 @@ public class SplitBolt extends BaseRichBolt {
     @Override
     public void prepare(Map map, TopologyContext topologyContext, OutputCollector outputCollector) {
         this.outputCollector = outputCollector;
-
     }
 
     @Override

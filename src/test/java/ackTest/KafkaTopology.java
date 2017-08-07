@@ -36,7 +36,7 @@ public class KafkaTopology {
         conf.put("topic", "msgTopic2");
         spoutConfig.scheme = new SchemeAsMultiScheme(new MessageScheme());
         TopologyBuilder builder = new TopologyBuilder();
-        builder.setSpout("msgKafkaSpout", new KafkaSpout(spoutConfig));
+        builder.setSpout("msgKafkaSpout", new KafkaSpout(spoutConfig),2);
 //        builder.setBolt("msgSentenceBolt", (IBasicBolt) new TopicMsgBolt()).shuffleGrouping("msgKafkaSpout");
 //        builder.setBolt("msgKafkaBolt", new KafkaBolt<String, Integer>()).shuffleGrouping("msgSentenceBolt");
         if (args.length == 0) {

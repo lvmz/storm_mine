@@ -134,6 +134,13 @@
             <version>2.4.2</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.apache.hbase/hbase-client -->
+        <dependency>
+            <groupId>org.apache.hbase</groupId>
+            <artifactId>hbase-client</artifactId>
+            <version>0.98.4-hadoop2</version>
+        </dependency>
+
     </dependencies>
     <build>
         <plugins>
