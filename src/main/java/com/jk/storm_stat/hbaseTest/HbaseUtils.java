@@ -272,11 +272,11 @@ public class HbaseUtils {
                 int i = 0;
                 for (KeyValue rowKV : result.list()) {
 
-//					if (i++ == 0) {
-//						System.out.print( "rowkey:" + new String(rowKV.getRow()) + " ");
-//					}
-//					System.out.print(" " + new String(rowKV.getQualifier()) + " ");
-//					System.out.print(":" + new String(rowKV.getValue()));
+					if (i++ == 0) {
+						System.out.print( "rowkey:" + new String(rowKV.getRow()) + " ");
+					}
+					System.out.print(" " + new String(rowKV.getQualifier()) + " ");
+					System.out.print(":" + new String(rowKV.getValue()));
 
                 }
 
